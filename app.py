@@ -23,11 +23,10 @@ logging.basicConfig(level=logging.DEBUG)
 # ========== Model Loading ==========
 custom_objects = {"loss": CategoricalCrossentropy(reduction="sum_over_batch_size")}
 
-tomato_stage_model = load_model("D:/suriya/projects/greenx/models/tomato_stage_classifier.h5", custom_objects=custom_objects)
-tomato_disease_model = load_model("D:/suriya/projects/greenx/tomato_disease_classifier.h5", custom_objects=custom_objects)
-chilli_stage_model = load_model("D:/suriya/projects/greenx/readymodels/CHILLIPEPPER_stage_classifier.h5", custom_objects=custom_objects)
-chilli_disease_model = load_model("D:/suriya/projects/greenx/readymodels/CHILLIPEPPER_diseases_prediction.h5", custom_objects=custom_objects)
-
+tomato_stage_model = load_model("readymodels/tomato_stage_classifier.h5", custom_objects=custom_objects)
+tomato_disease_model = load_model("readymodels/tomato_disease_classifier.h5", custom_objects=custom_objects)
+chilli_stage_model = load_model("readymodels/CHILLIPEPPER_stage_classifier.h5", custom_objects=custom_objects)
+chilli_disease_model = load_model("readymodels/CHILLIPEPPER_diseases_prediction.h5", custom_objects=custom_objects)
 # ========== Labels ==========
 tomato_stage_labels = ["Growing", "Vegetative", "Flowering"]
 tomato_disease_labels = [
