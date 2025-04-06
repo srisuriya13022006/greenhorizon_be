@@ -20,25 +20,25 @@ CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # ========== Logging Setup ==========
 logging.basicConfig(level=logging.DEBUG)
 
-# ========== Model Loading ==========
-custom_objects = {"loss": CategoricalCrossentropy(reduction="sum_over_batch_size")}
+# # ========== Model Loading ==========
+# custom_objects = {"loss": CategoricalCrossentropy(reduction="sum_over_batch_size")}
 
-tomato_stage_model = load_model("readymodels/tomato_stage_classifier.h5", custom_objects=custom_objects)
-tomato_disease_model = load_model("readymodels/tomato_disease_classifier.h5", custom_objects=custom_objects)
-chilli_stage_model = load_model("readymodels/CHILLIPEPPER_stage_classifier.h5", custom_objects=custom_objects)
-chilli_disease_model = load_model("readymodels/CHILLIPEPPER_diseases_prediction.h5", custom_objects=custom_objects)
-# ========== Labels ==========
-tomato_stage_labels = ["Growing", "Vegetative", "Flowering"]
-tomato_disease_labels = [
-    "Tomato___Bacterial_spot", "Tomato___Early_blight", "Tomato___Late_blight", "Tomato___Leaf_Mold",
-    "Tomato___Septoria_leaf_spot", "", "Tomato___Spider_mites Two-spotted_spider_mite",
-    "Tomato___Target_Spot", "Tomato___Tomato_Yellow_Leaf_Curl_Virus", "tomato_healthy"
-]
-chilli_stage_labels = ["Growing", "Vegetative", "Flowering"]
-chilli_disease_labels = [
-    "Bacterial_Spot", "Cercospora_Leaf_Spot", "chilli_healthy",
-    "Curl_Virus", "Nutrition__Deficiency", "White_spot"
-]
+# tomato_stage_model = load_model("readymodels/tomato_stage_classifier.h5", custom_objects=custom_objects)
+# tomato_disease_model = load_model("readymodels/tomato_disease_classifier.h5", custom_objects=custom_objects)
+# chilli_stage_model = load_model("readymodels/CHILLIPEPPER_stage_classifier.h5", custom_objects=custom_objects)
+# chilli_disease_model = load_model("readymodels/CHILLIPEPPER_diseases_prediction.h5", custom_objects=custom_objects)
+# # ========== Labels ==========
+# tomato_stage_labels = ["Growing", "Vegetative", "Flowering"]
+# tomato_disease_labels = [
+#     "Tomato___Bacterial_spot", "Tomato___Early_blight", "Tomato___Late_blight", "Tomato___Leaf_Mold",
+#     "Tomato___Septoria_leaf_spot", "", "Tomato___Spider_mites Two-spotted_spider_mite",
+#     "Tomato___Target_Spot", "Tomato___Tomato_Yellow_Leaf_Curl_Virus", "tomato_healthy"
+# ]
+# chilli_stage_labels = ["Growing", "Vegetative", "Flowering"]
+# chilli_disease_labels = [
+#     "Bacterial_Spot", "Cercospora_Leaf_Spot", "chilli_healthy",
+#     "Curl_Virus", "Nutrition__Deficiency", "White_spot"
+# ]
 
 # ========== API Keys ==========
 WEATHER_API_KEY = "6212ccd8bd7b6f3657b18b690bc9ba25"
@@ -152,63 +152,63 @@ def handle_soil_report():
         logging.error(f"Error in /soilreport: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-# ========== Image Preprocessing ==========
-def preprocess_image(img_path):
-    img = image.load_img(img_path, target_size=(224, 224))
-    img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0) / 255.0
-    return img_array
+# # ========== Image Preprocessing ==========
+# def preprocess_image(img_path):
+#     img = image.load_img(img_path, target_size=(224, 224))
+#     img_array = image.img_to_array(img)
+#     img_array = np.expand_dims(img_array, axis=0) / 255.0
+#     return img_array
 
-# ========== Prediction Function ==========
-def predict_stage_and_disease(plant_name, img_path):
-    img_array = preprocess_image(img_path)
+# # ========== Prediction Function ==========
+# def predict_stage_and_disease(plant_name, img_path):
+#     img_array = preprocess_image(img_path)
 
-    if plant_name.lower() == "tomato":
-        stage_pred = tomato_stage_model.predict(img_array)
-        disease_pred = tomato_disease_model.predict(img_array)
-        stage = tomato_stage_labels[np.argmax(stage_pred)]
-        disease = tomato_disease_labels[np.argmax(disease_pred)]
+#     if plant_name.lower() == "tomato":
+#         stage_pred = tomato_stage_model.predict(img_array)
+#         disease_pred = tomato_disease_model.predict(img_array)
+#         stage = tomato_stage_labels[np.argmax(stage_pred)]
+#         disease = tomato_disease_labels[np.argmax(disease_pred)]
 
-    elif plant_name.lower() == "chilli":
-        stage_pred = chilli_stage_model.predict(img_array)
-        disease_pred = chilli_disease_model.predict(img_array)
-        stage = chilli_stage_labels[np.argmax(stage_pred)]
-        disease = chilli_disease_labels[np.argmax(disease_pred)]
+#     elif plant_name.lower() == "chilli":
+#         stage_pred = chilli_stage_model.predict(img_array)
+#         disease_pred = chilli_disease_model.predict(img_array)
+#         stage = chilli_stage_labels[np.argmax(stage_pred)]
+#         disease = chilli_disease_labels[np.argmax(disease_pred)]
 
-    else:
-        raise ValueError("Unsupported plant name")
+#     else:
+#         raise ValueError("Unsupported plant name")
 
-    logging.info(f"Predicted stage: {stage}, disease: {disease}")
-    return {"stage": stage, "disease": disease}
+#     logging.info(f"Predicted stage: {stage}, disease: {disease}")
+#     return {"stage": stage, "disease": disease}
 
-# ========== New Plant Upload Endpoint ==========
-@app.route("/plantupload", methods=["POST"])
-def handle_plant_upload():
-    try:
-        logging.debug(f"Form keys: {list(request.form.keys())}")
-        logging.debug(f"Files: {list(request.files.keys())}")
-        if 'image' not in request.files or 'plantName' not in request.form:
-            return jsonify({"error": "Image and plantName are required"}), 400
+# # ========== New Plant Upload Endpoint ==========
+# @app.route("/plantupload", methods=["POST"])
+# def handle_plant_upload():
+#     try:
+#         logging.debug(f"Form keys: {list(request.form.keys())}")
+#         logging.debug(f"Files: {list(request.files.keys())}")
+#         if 'image' not in request.files or 'plantName' not in request.form:
+#             return jsonify({"error": "Image and plantName are required"}), 400
 
-        img_file = request.files['image']
-        plant_name = request.form['plantName']
+#         img_file = request.files['image']
+#         plant_name = request.form['plantName']
 
-        if img_file.filename == '':
-            return jsonify({"error": "No selected file"}), 400
+#         if img_file.filename == '':
+#             return jsonify({"error": "No selected file"}), 400
 
-        temp_dir = "temp"
-        os.makedirs(temp_dir, exist_ok=True)
-        temp_path = os.path.join(temp_dir, img_file.filename)
-        img_file.save(temp_path)
+#         temp_dir = "temp"
+#         os.makedirs(temp_dir, exist_ok=True)
+#         temp_path = os.path.join(temp_dir, img_file.filename)
+#         img_file.save(temp_path)
 
-        prediction = predict_stage_and_disease(plant_name, temp_path)
+#         prediction = predict_stage_and_disease(plant_name, temp_path)
 
-        os.remove(temp_path)
-        return jsonify(prediction), 200
+#         os.remove(temp_path)
+#         return jsonify(prediction), 200
 
-    except Exception as e:
-        logging.error(f"Error in /plantupload: {e}")
-        return jsonify({"error": str(e)}), 500
+#     except Exception as e:
+#         logging.error(f"Error in /plantupload: {e}")
+#         return jsonify({"error": str(e)}), 500
 
 # ========== Start Server ==========
 if __name__ == "__main__":
