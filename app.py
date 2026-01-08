@@ -42,7 +42,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 # ========== API Keys ==========
 WEATHER_API_KEY = "6212ccd8bd7b6f3657b18b690bc9ba25"
-GEMINI_API_KEY = "AIzaSyB7QIqPNg89yzr-t3msQANz13gbOsNh3BI"
+GEMINI_API_KEY = "AIzaSyBJrLc2KrERWfKoZEUc-Ly2JItSS74-mnw"
 
 # ========== Gemini Setup ==========
 configure(api_key=GEMINI_API_KEY)
