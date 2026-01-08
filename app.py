@@ -46,7 +46,7 @@ GEMINI_API_KEY = "AIzaSyBJrLc2KrERWfKoZEUc-Ly2JItSS74-mnw"
 
 # ========== Gemini Setup ==========
 configure(api_key=GEMINI_API_KEY)
-model = GenerativeModel("gemini-1.5-pro")
+model = GenerativeModel("gemini-3-flash-preview")
 
 # ========== Weather Function ==========
 def get_weather_data(latitude, longitude):
